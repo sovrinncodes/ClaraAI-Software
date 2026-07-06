@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
-import { adminGetTenantDetail } from '@/lib/db/queries/admin/tenants'
+import { adminGetTenantDetail, getTenantFeatureFlags } from '@/lib/db/queries/admin/tenants'
 import { TenantActions } from '@/components/admin/tenant-actions'
 import { TenantStatusBadge, DemoBadge } from '@/components/admin/tenant-badges'
+import { TenantSettingsPanel } from '@/components/admin/tenant-settings-panel'
+import { AlertSupportActions } from '@/components/admin/alert-support-actions'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { formatTimeAgo } from '@/lib/utils/format'
 import type { TenantStatus } from '@/types/admin'
@@ -133,11 +135,14 @@ export default async function AdminTenantDetailPage({
                       {formatTimeAgo(alert.createdAt.toISOString())}
                     </span>
                   </div>
-                  <p className="font-mono text-[10px] mt-0.5 ml-3.5" style={{ color: 'var(--text-muted)' }}>
-                    {alert.facility.externalId}
-                    {alert.asset ? ` · ${alert.asset.externalId}` : ''} · {alert.modelName} ·{' '}
-                    {alert.status}
-                  </p>
+                  <div className="flex items-center justify-between gap-3 mt-0.5 ml-3.5">
+                    <p className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                      {alert.facility.externalId}
+                      {alert.asset ? ` · ${alert.asset.externalId}` : ''} · {alert.modelName} ·{' '}
+                      {alert.status}
+                    </p>
+                    <AlertSupportActions alertId={alert.id} status={alert.status} />
+                  </div>
                 </li>
               ))}
               {recentAlerts.length === 0 && (
@@ -174,6 +179,14 @@ export default async function AdminTenantDetailPage({
                 </li>
               )}
             </ul>
+          </PanelCard>
+
+          <PanelCard title="Plan & Feature Flags">
+            <TenantSettingsPanel
+              tenantId={tenant.id}
+              plan={tenant.plan}
+              featureFlags={getTenantFeatureFlags(tenant.metadata)}
+            />
           </PanelCard>
 
           <PanelCard title="Tenant Information">

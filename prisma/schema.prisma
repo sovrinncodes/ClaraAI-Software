@@ -91,6 +91,7 @@ model Tenant {
   status    TenantStatus @default(ACTIVE)
   isDemo    Boolean      @default(false)
   logoUrl   String?
+  metadata  Json? // staff-managed settings, e.g. { featureFlags: { acousticMonitor, hotSpotTracker } }
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 
@@ -112,6 +113,7 @@ model User {
   name         String?
   role         UserRole      @default(FACILITY_MANAGER)
   platformRole PlatformRole?
+  isDisabled   Boolean       @default(false)
   cognitoSub   String        @unique
   avatarUrl    String?
   createdAt    DateTime      @default(now())

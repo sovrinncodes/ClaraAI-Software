@@ -26,16 +26,16 @@ const NAV_SECTIONS: { label: string; items: AdminNavItem[] }[] = [
     label: 'PLATFORM',
     items: [
       { label: 'Overview', href: '/admin', icon: LayoutDashboard },
+      { label: 'Users', href: '/admin/users', icon: Users },
       { label: 'Demo Control', href: '/admin/demo', icon: FlaskConical },
       { label: 'Audit Log', href: '/admin/audit', icon: ScrollText },
     ],
   },
   {
-    label: 'COMING SOON',
+    label: 'INSIGHTS',
     items: [
-      { label: 'Users', href: '/admin/users', icon: Users, disabled: true },
-      { label: 'Platform Health', href: '/admin/health', icon: HeartPulse, disabled: true },
-      { label: 'Analytics', href: '/admin/analytics', icon: BarChart3, disabled: true },
+      { label: 'Platform Health', href: '/admin/health', icon: HeartPulse },
+      { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     ],
   },
 ]

@@ -10,7 +10,14 @@ const KNOWN_ACTIONS = [
   'IMPERSONATE_END',
   'TENANT_RESEED',
   'TENANT_CLONE',
+  'TENANT_CREATE',
   'TENANT_STATUS_CHANGE',
+  'TENANT_SETTINGS_CHANGE',
+  'USER_CREATE',
+  'USER_UPDATE',
+  'ROLE_GRANT',
+  'ROLE_REVOKE',
+  'ALERT_STATUS_CHANGE',
 ]
 
 const TH_CLASS = 'px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-widest'

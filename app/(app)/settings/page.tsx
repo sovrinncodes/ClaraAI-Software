@@ -513,7 +513,7 @@ export default function SettingsPage() {
 
               <div className="space-y-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     Organization Name
                   </label>
                   <input
@@ -528,7 +528,7 @@ export default function SettingsPage() {
                   
                   {/* Industry Select */}
                   <div className="flex flex-col gap-1.5 relative">
-                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                    <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                       Industry Vertical
                     </label>
                     <button
@@ -562,7 +562,7 @@ export default function SettingsPage() {
 
                   {/* Timezone Select */}
                   <div className="flex flex-col gap-1.5 relative">
-                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                    <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                       Default Timezone
                     </label>
                     <button
@@ -672,7 +672,7 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 {/* Data Retention Select */}
                 <div className="flex flex-col gap-1.5 relative">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     Data Retention Period
                   </label>
                   <button
@@ -709,7 +709,7 @@ export default function SettingsPage() {
 
                 {/* ESG Standard Select */}
                 <div className="flex flex-col gap-1.5 relative">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     ESG Reporting Standard
                   </label>
                   <button
@@ -926,14 +926,14 @@ export default function SettingsPage() {
                               <img
                                 src={user.avatarUrl}
                                 alt={user.name}
-                                className="w-8 h-8 rounded-[6px] object-cover border border-zinc-800"
+                                className="w-8 h-8 rounded-[6px] object-cover border border-[--border-default]"
                               />
                             ) : user.role === 'Viewer' ? (
-                              <div className="w-8 h-8 rounded-[6px] bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 shrink-0">
+                              <div className="w-8 h-8 rounded-[6px] bg-[--bg-card] border border-[--border-default] flex items-center justify-center text-[--text-muted] shrink-0">
                                 <Mail className="w-3.5 h-3.5 text-[--text-muted]" />
                               </div>
                             ) : (
-                              <div className="w-8 h-8 rounded-[6px] bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center font-sans text-xs font-bold text-zinc-300">
+                              <div className="w-8 h-8 rounded-[6px] bg-[--bg-card] border border-[--border-default] flex items-center justify-center font-sans text-xs font-bold text-[--text-secondary]">
                                 {user.name.split(' ').map(n => n[0]).join('')}
                               </div>
                             )}
@@ -941,7 +941,7 @@ export default function SettingsPage() {
                               <div className="flex items-center">
                                 <span className="text-xs font-semibold text-[--text-primary]">{user.name}</span>
                                 {user.name === 'Sarah Connor' && (
-                                  <span className="bg-zinc-850 border border-zinc-800 text-zinc-400 font-mono text-[8px] px-1 rounded-[2px] font-semibold ml-1.5">
+                                  <span className="bg-[--bg-active] border border-[--border-strong] text-[--text-muted] font-mono text-[8px] px-1 rounded-[2px] font-semibold ml-1.5">
                                     You
                                   </span>
                                 )}
@@ -1018,7 +1018,7 @@ export default function SettingsPage() {
                         {/* Actions Column */}
                         <td className="px-4 py-3.5 text-right font-sans text-xs text-[--text-muted]">
                           {user.name === 'Sarah Connor' ? (
-                            <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Locked</span>
+                            <span className="text-[10px] uppercase font-bold text-[--text-muted] tracking-wider">Locked</span>
                           ) : (
                             <div className="flex items-center justify-end gap-2">
                               <button
@@ -1048,9 +1048,9 @@ export default function SettingsPage() {
             </div>
 
             {/* Invite External Contractors banner */}
-            <div className="rounded-[10px] border border-dashed border-zinc-800 bg-[--bg-card]/10 p-8 text-center mt-6">
-              <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900/50 flex items-center justify-center mx-auto mb-4">
-                <Link2 className="w-5 h-5 text-zinc-400" />
+            <div className="rounded-[10px] border border-dashed border-[--border-default] bg-[--bg-card]/10 p-8 text-center mt-6">
+              <div className="w-10 h-10 rounded-full border border-[--border-default] bg-[--bg-card] flex items-center justify-center mx-auto mb-4">
+                <Link2 className="w-5 h-5 text-[--text-secondary]" />
               </div>
               <h4 className="font-sans text-sm font-semibold text-[--text-primary] mb-1.5">
                 Invite External Contractors
@@ -1063,7 +1063,7 @@ export default function SettingsPage() {
                   const tempToken = `https://clara-ai.com/invite/temp_token_f9328a01f827b3`
                   handleCopyText(tempToken, 'tempToken', 'Contractor Link')
                 }}
-                className="px-4 py-1.5 rounded-[6px] border border-zinc-700 bg-zinc-950 text-xs font-sans font-semibold text-[--text-primary] hover:border-zinc-500 hover:bg-zinc-900 transition-all cursor-pointer"
+                className="px-4 py-1.5 rounded-[6px] border border-[--border-default] bg-[--bg-elevated] text-xs font-sans font-semibold text-[--text-primary] hover:border-[--border-strong] hover:bg-[--bg-hover] transition-all cursor-pointer"
               >
                 Create Temporary Link
               </button>
@@ -1130,8 +1130,8 @@ export default function SettingsPage() {
                             <span className={cn(
                               "text-[8px] font-mono font-bold px-1 py-0.5 rounded border self-start mt-1 tracking-wider",
                               key.env === 'LIVE' 
-                                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
-                                : "bg-zinc-700/20 text-zinc-400 border-zinc-700/50"
+                                ? "bg-green-500/10 text-green-400 border-green-500/20"
+                                : "bg-[--bg-card] text-[--text-secondary] border-[--border-default]"
                             )}>
                               {key.env}
                             </span>
@@ -1244,8 +1244,8 @@ export default function SettingsPage() {
                           <span className={cn(
                             "px-2 py-0.5 rounded border text-[9px] font-sans font-bold tracking-wider",
                             wh.status === 'ACTIVE'
-                              ? "border-emerald-500/30 text-emerald-400 bg-transparent"
-                              : "border-rose-500/30 text-rose-400 bg-transparent"
+                              ? "border-green-500/30 text-green-400 bg-transparent"
+                              : "border-red-500/30 text-red-400 bg-transparent"
                           )}>
                             {wh.status}
                           </span>
@@ -1294,12 +1294,12 @@ export default function SettingsPage() {
               </p>
 
               {/* Curl sample code block */}
-              <div className="relative bg-[#070A0F] border border-[--border-strong] rounded-[6px] p-4 font-mono text-[10px] text-zinc-300 space-y-2 overflow-x-auto">
-                <div className="flex justify-between items-center border-b border-zinc-800 pb-1.5 mb-1.5 text-zinc-500">
+              <div className="relative bg-[--bg-base] border border-[--border-strong] rounded-[6px] p-4 font-mono text-[10px] text-[--text-secondary] space-y-2 overflow-x-auto">
+                <div className="flex justify-between items-center border-b border-[--border-subtle] pb-1.5 mb-1.5 text-[--text-muted]">
                   <span>cURL Command</span>
                   <button
                     onClick={() => handleCopyText('curl https://api.clara-ai.com/v1/facilities \\\n  -H "Authorization: Bearer clara_live_********************8f9a"', 'curlSample', 'Curl command')}
-                    className="p-1 hover:bg-zinc-800 rounded transition-colors text-zinc-400 hover:text-white"
+                    className="p-1 hover:bg-[--bg-hover] rounded transition-colors text-[--text-muted] hover:text-[--text-primary]"
                   >
                     {copiedTextMap['curlSample'] ? (
                       <Check className="w-3 h-3 text-[#00D4AA]" />
@@ -1351,7 +1351,7 @@ export default function SettingsPage() {
                 </div>
 
                 <p className="text-[10px] text-[--text-secondary] leading-relaxed font-sans pt-1">
-                  Your current plan includes 500,000 API requests per month. Overage is billed at $0.05 per 1,000 requests.
+                  Your current plan includes 500,000 API requests per month. Overage is billed at R 0.95 per 1,000 requests.
                 </p>
               </div>
             </div>
@@ -1572,7 +1572,7 @@ export default function SettingsPage() {
 
             <form onSubmit={handleSaveSAML} className="space-y-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Entity ID / Issuer URI
                 </label>
                 <input
@@ -1584,7 +1584,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Single Sign-On Service URL
                 </label>
                 <input
@@ -1596,7 +1596,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   X.509 Certificate (PEM Format)
                 </label>
                 <textarea
@@ -1630,10 +1630,10 @@ export default function SettingsPage() {
       {/* 2. Delete Tenant Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-[10px] border border-[--color-critical]/40 bg-[--bg-surface] p-6 shadow-2xl space-y-4">
+          <div className="w-full max-w-md rounded-[10px] border border-[--color-status-critical]/40 bg-[--bg-surface] p-6 shadow-2xl space-y-4">
             <div className="flex justify-between items-center border-b border-[--border-subtle] pb-3">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-[--color-critical]" />
+                <AlertTriangle className="w-4 h-4 text-[--color-status-critical]" />
                 <h3 className="font-sans text-base font-semibold text-[--text-primary]">
                   Delete Tenant Sovrinn?
                 </h3>
@@ -1662,7 +1662,7 @@ export default function SettingsPage() {
                 value={deleteConfirmInput}
                 onChange={(e) => setDeleteConfirmInput(e.target.value)}
                 placeholder="Sovrinn"
-                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-[4px] text-xs font-mono text-[--text-primary] placeholder-[--text-muted] outline-none focus:border-[--color-critical]"
+                className="w-full px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-[4px] text-xs font-mono text-[--text-primary] placeholder-[--text-muted] outline-none focus:border-[--color-status-critical]"
               />
 
               <div className="flex justify-end gap-3 pt-2">
@@ -1682,7 +1682,7 @@ export default function SettingsPage() {
                   className={cn(
                     'px-4 py-1.5 rounded-[6px] text-xs font-sans font-semibold transition-all cursor-pointer',
                     deleteConfirmInput === 'Sovrinn'
-                      ? 'bg-[--color-critical] text-white hover:bg-[--color-critical]/90'
+                      ? 'bg-[--color-status-critical] text-white hover:bg-[--color-status-critical]/90'
                       : 'bg-[--bg-elevated] text-[--text-disabled] border border-[--border-default] cursor-not-allowed'
                   )}
                 >
@@ -1715,7 +1715,7 @@ export default function SettingsPage() {
 
             <form onSubmit={handleInviteMember} className="space-y-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Full Name
                 </label>
                 <input
@@ -1729,7 +1729,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Email Address
                 </label>
                 <input
@@ -1744,7 +1744,7 @@ export default function SettingsPage() {
 
               {/* Role Select in Modal */}
               <div className="flex flex-col gap-1.5 relative">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Role Permissions
                 </label>
                 <button
@@ -1834,7 +1834,7 @@ export default function SettingsPage() {
                   <span className="select-all break-all pr-2">{generatedKey}</span>
                   <button
                     onClick={() => handleCopyText(generatedKey, 'newGenKey', 'API Key')}
-                    className="p-1.5 hover:bg-zinc-800 rounded transition-colors text-zinc-400 hover:text-white shrink-0"
+                    className="p-1.5 hover:bg-[--bg-hover] rounded transition-colors text-[--text-muted] hover:text-[--text-primary] shrink-0"
                     title="Copy API Key"
                   >
                     {copiedTextMap['newGenKey'] ? (
@@ -1860,7 +1860,7 @@ export default function SettingsPage() {
             ) : (
               <form onSubmit={handleGenerateKey} className="space-y-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     Key Name
                   </label>
                   <input
@@ -1875,7 +1875,7 @@ export default function SettingsPage() {
 
                 {/* Env Select */}
                 <div className="flex flex-col gap-1.5 relative">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     Environment
                   </label>
                   <button
@@ -1911,7 +1911,7 @@ export default function SettingsPage() {
 
                 {/* Permissions Select */}
                 <div className="flex flex-col gap-1.5 relative">
-                  <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                  <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                     Permissions Scope
                   </label>
                   <button
@@ -1987,7 +1987,7 @@ export default function SettingsPage() {
 
             <form onSubmit={handleAddWebhook} className="space-y-4 font-sans text-xs">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Endpoint URL
                 </label>
                 <input
@@ -2002,7 +2002,7 @@ export default function SettingsPage() {
 
               {/* Subscribed Events list */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[--text-secondary]">
+                <label className="text-[10px] font-sans font-bold uppercase tracking-widest text-[--text-secondary]">
                   Event Subscriptions
                 </label>
                 <div className="space-y-2 pt-1 font-mono text-[11px]">

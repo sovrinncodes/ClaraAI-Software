@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { prisma, rawPrisma } from '@/lib/db/client'
-import { adminListTenantOverviews } from '@/lib/db/queries/admin/tenants'
+import { adminListTenantOverviews, adminCreateTenant } from '@/lib/db/queries/admin/tenants'
 import { recordAuditEvent } from '@/lib/db/queries/admin/audit'
 import { cloneDemoTenant } from '@/lib/db/demo-seed'
 import { requirePlatformRole, getStaffActor } from '@/lib/utils/staff'
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-const cloneTenantSchema = z.object({
+const createTenantSchema = z.object({
   name: z.string().min(2).max(80),
   slug: z
     .string()
@@ -29,15 +29,18 @@ const cloneTenantSchema = z.object({
     .max(50)
     .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase letters, numbers, and hyphens'),
   industry: z.string().max(80).optional(),
+  plan: z.enum(['trial', 'starter', 'professional', 'enterprise']).optional(),
+  // 'demo-clone' copies the canonical scenario; 'blank' creates an empty real tenant
+  template: z.enum(['demo-clone', 'blank']).default('demo-clone'),
 })
 
-/** Creates a new demo tenant cloned from the canonical scenario. */
+/** Creates a tenant — either a demo clone of the canonical scenario or a blank one. */
 export async function POST(request: NextRequest) {
   if (!requirePlatformRole(request.headers, 'SUPER_ADMIN')) {
     return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
   }
 
-  const parsed = cloneTenantSchema.safeParse(await request.json().catch(() => null))
+  const parsed = createTenantSchema.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
     return NextResponse.json(
       { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid request body' },
@@ -51,17 +54,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Slug already in use' }, { status: 409 })
     }
 
-    const tenant = await cloneDemoTenant(rawPrisma, parsed.data)
+    const isClone = parsed.data.template === 'demo-clone'
+    const tenant = isClone
+      ? await cloneDemoTenant(rawPrisma, parsed.data)
+      : await adminCreateTenant({
+          name: parsed.data.name,
+          slug: parsed.data.slug,
+          industry: parsed.data.industry ?? 'Real Estate & Infrastructure',
+          plan: parsed.data.plan ?? 'trial',
+        })
 
     const actor = getStaffActor(request.headers)
     await recordAuditEvent({
       actorId: actor.id,
       actorEmail: actor.email,
-      action: 'TENANT_CLONE',
+      action: isClone ? 'TENANT_CLONE' : 'TENANT_CREATE',
       targetType: 'TENANT',
       targetId: tenant.id,
       tenantId: tenant.id,
-      metadata: { name: tenant.name, slug: tenant.slug },
+      metadata: { name: tenant.name, slug: tenant.slug, template: parsed.data.template },
     })
 
     return NextResponse.json({ success: true, data: tenant }, { status: 201 })

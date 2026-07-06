@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { RefreshCcw, PauseCircle, PlayCircle, Loader2 } from 'lucide-react'
+import { RefreshCcw, PauseCircle, PlayCircle, Archive, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { ViewAsButton } from '@/components/admin/view-as-button'
 import type { TenantStatus } from '@/types/admin'
@@ -20,28 +20,32 @@ const ACTION_BUTTON_CLASS =
 
 export function TenantActions({ tenantId, tenantName, status, isDemo }: TenantActionsProps) {
   const router = useRouter()
-  const [pendingAction, setPendingAction] = useState<'reseed' | 'status' | null>(null)
+  const [pendingAction, setPendingAction] = useState<'reseed' | 'status' | 'archive' | null>(null)
   const [message, setMessage] = useState<string | null>(null)
 
-  async function runAction(action: 'reseed' | 'status') {
+  async function runAction(action: 'reseed' | 'status' | 'archive') {
     const confirmText =
       action === 'reseed'
         ? `Reset ${tenantName} to its pristine demo scenario? All current operational data is replaced.`
-        : status === 'ACTIVE'
-          ? `Suspend ${tenantName}? Their users will lose access.`
-          : `Reactivate ${tenantName}?`
+        : action === 'archive'
+          ? `Archive ${tenantName}? The tenant is retired but its data is kept.`
+          : status === 'ACTIVE'
+            ? `Suspend ${tenantName}? Their users will lose access.`
+            : `Reactivate ${tenantName}?`
     if (!window.confirm(confirmText)) return
 
     setPendingAction(action)
     setMessage(null)
     try {
+      const nextStatus =
+        action === 'archive' ? 'ARCHIVED' : status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE'
       const res =
         action === 'reseed'
           ? await fetch(`/api/admin/tenants/${tenantId}/reseed`, { method: 'POST' })
           : await fetch(`/api/admin/tenants/${tenantId}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ status: status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE' }),
+              body: JSON.stringify({ status: nextStatus }),
             })
       const body = await res.json()
       if (!body.success) {
@@ -94,6 +98,23 @@ export function TenantActions({ tenantId, tenantName, status, isDemo }: TenantAc
         )}
         {status === 'ACTIVE' ? 'Suspend' : 'Reactivate'}
       </button>
+
+      {status !== 'ARCHIVED' && (
+        <button
+          type="button"
+          onClick={() => runAction('archive')}
+          disabled={pendingAction !== null}
+          className={cn(ACTION_BUTTON_CLASS)}
+          style={{ borderColor: 'var(--border-default)' }}
+        >
+          {pendingAction === 'archive' ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <Archive className="w-3.5 h-3.5" />
+          )}
+          Archive
+        </button>
+      )}
 
       {message && (
         <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>

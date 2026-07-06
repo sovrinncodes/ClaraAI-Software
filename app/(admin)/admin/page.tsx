@@ -3,6 +3,7 @@ import { adminGetPlatformStats } from '@/lib/db/queries/admin/stats'
 import { adminListTenantOverviews } from '@/lib/db/queries/admin/tenants'
 import { PlatformKpiRow } from '@/components/admin/platform-kpi-row'
 import { TenantTable } from '@/components/admin/tenant-table'
+import { CreateTenantForm } from '@/components/admin/create-tenant-form'
 import type { TenantOverview } from '@/types/admin'
 
 export const metadata: Metadata = { title: 'Overview' }
@@ -16,13 +17,16 @@ export default async function AdminOverviewPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
-          Platform Overview
-        </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-          All tenants, facilities, and alerts across Clara AI.
-        </p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
+            Platform Overview
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+            All tenants, facilities, and alerts across Clara AI.
+          </p>
+        </div>
+        <CreateTenantForm />
       </div>
 
       <PlatformKpiRow stats={stats} />
