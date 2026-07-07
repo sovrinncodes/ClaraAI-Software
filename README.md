@@ -95,6 +95,11 @@ prisma/            # schema, seed script
 docs/              # architecture, AWS integration, and design references
 ```
 
+## Deployment
+
+Deploys to Vercel. See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the full staging
+setup runbook (project linking, database provisioning, environment variables).
+
 ## Security notes
 
 - Tenant isolation is enforced at three layers: JWT claim → application-level `WHERE tenant_id = …` → PostgreSQL Row Level Security. See `docs/BACKEND.md` and `docs/INTEGRATION.md`.

@@ -288,7 +288,7 @@ function PlanCard({ plan, index }: { plan: (typeof PLANS)[0]; index: number }) {
       <ul className="space-y-2 mt-auto text-[11px] font-mono uppercase text-[#8B96A8]">
         {plan.features.map(f => (
           <li key={f} className="flex items-start gap-2.5">
-            <CheckCircle2
+            <Check
               className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#00D4AA]/80"
             />
             <span>{f}</span>
