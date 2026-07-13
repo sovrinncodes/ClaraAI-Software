@@ -5,7 +5,26 @@ import { isPlatformRole } from '@/lib/utils/staff'
 import { IMPERSONATION_COOKIE, verifyImpersonationToken } from '@/lib/utils/impersonation'
 import type { PlatformRole } from '@/types/admin'
 
-const PUBLIC_PATHS = ['/login', '/signup', '/verify', '/api/auth']
+// Prefix-matched: auth flows and their sub-paths (e.g. /verify?token=…)
+const PUBLIC_PREFIXES = ['/login', '/signup', '/verify', '/api/auth']
+
+// Exact-matched only — '/' must never be prefix-matched, or every route
+// (including the authenticated app) would match `pathname.startsWith('/')`.
+const PUBLIC_MARKETING_PATHS = [
+  '/',
+  '/about',
+  '/blog',
+  '/contact',
+  '/cookies',
+  '/demo',
+  '/pricing',
+  '/privacy',
+  '/product',
+  '/security',
+  '/solutions',
+  '/terms',
+]
+
 const SYNTHETIC_MODE = process.env.NEXT_PUBLIC_SYNTHETIC_MODE === 'true'
 
 // Headers that carry trusted identity downstream. Always stripped from the
@@ -20,7 +39,8 @@ const TRUST_HEADERS = [
 ]
 
 function isPublicPath(pathname: string): boolean {
-  return PUBLIC_PATHS.some((p) => pathname.startsWith(p))
+  if (PUBLIC_MARKETING_PATHS.includes(pathname)) return true
+  return PUBLIC_PREFIXES.some((p) => pathname.startsWith(p))
 }
 
 function isAdminPath(pathname: string): boolean {
