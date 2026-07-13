@@ -69,18 +69,26 @@ to whichever URL you're actually testing — a var set only for **Production** w
 apply to a **Preview** deployment and vice versa; this is the single most common
 cause of "I set it but it's not working."
 
-Keep synthetic mode **off** in Production once real Cognito/AWS infrastructure
-exists — it's a staging/demo convenience, not a production auth path.
+**⚠️ `NEXT_PUBLIC_SYNTHETIC_MODE=true` is not scoped to `/demo` — it bypasses login
+for every route in the app** (`/dashboard`, `/facilities`, `/settings`, and `/admin`
+if `SYNTHETIC_PLATFORM_ROLE` is also set). As of this PoC stage there's no real
+Cognito auth configured yet, so enabling it in Production doesn't weaken anything
+that currently works — it's a deliberate choice to keep the whole app publicly
+viewable, not an accident. **Revisit this once real Cognito/AWS auth is wired up** —
+at that point synthetic mode should move to Preview-only, and a scoped guest-demo
+flow (grants read-only access to just the demo tenant, not the whole app) should
+replace it for Production if a public demo is still wanted.
 
 | Key | Value | Scope |
 |---|---|---|
-| `DATABASE_URL` | staging Postgres connection string | Preview |
-| `NEXTAUTH_SECRET` | `openssl rand -base64 32` | Preview |
-| `NEXTAUTH_URL` | the deployment's URL | Preview |
-| `NEXT_PUBLIC_SYNTHETIC_MODE` | `true` | Preview |
-| `SYNTHETIC_PLATFORM_ROLE` | `SUPER_ADMIN` (to reach `/admin`) | Preview |
+| `DATABASE_URL` | staging Postgres connection string | Preview + Production |
+| `NEXTAUTH_SECRET` | `openssl rand -base64 32` | Preview + Production |
+| `NEXTAUTH_URL` | the deployment's URL | Preview + Production |
+| `NEXT_PUBLIC_SYNTHETIC_MODE` | `true` | Preview + Production |
+| `SYNTHETIC_PLATFORM_ROLE` | `SUPER_ADMIN` (to reach `/admin`) | Preview + Production |
 
-Equivalent via CLI, if you do have it linked:
+Equivalent via CLI, if you do have it linked (repeat with `production` for the
+production environment):
 
 ```bash
 vercel env add DATABASE_URL preview
