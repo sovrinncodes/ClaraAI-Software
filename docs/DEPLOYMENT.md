@@ -62,17 +62,42 @@ DATABASE_URL="<staging-connection-string>" npx tsx prisma/seed.ts
 
 ## 5. Set environment variables (Preview scope)
 
-Set these for the **Preview** environment only (Project → Settings → Environment
-Variables, or via CLI). Keep synthetic mode **off** in Production once real Cognito/AWS
-infrastructure exists — it's a staging/demo convenience, not a production auth path.
+If you're using the GitHub integration for deploys (no `vercel` CLI needed for this
+part), set these in the dashboard: **Project → Settings → Environment Variables** →
+add each one and tick the environment(s) it applies to. Match the environment scope
+to whichever URL you're actually testing — a var set only for **Production** won't
+apply to a **Preview** deployment and vice versa; this is the single most common
+cause of "I set it but it's not working."
+
+Keep synthetic mode **off** in Production once real Cognito/AWS infrastructure
+exists — it's a staging/demo convenience, not a production auth path.
+
+| Key | Value | Scope |
+|---|---|---|
+| `DATABASE_URL` | staging Postgres connection string | Preview |
+| `NEXTAUTH_SECRET` | `openssl rand -base64 32` | Preview |
+| `NEXTAUTH_URL` | the deployment's URL | Preview |
+| `NEXT_PUBLIC_SYNTHETIC_MODE` | `true` | Preview |
+| `SYNTHETIC_PLATFORM_ROLE` | `SUPER_ADMIN` (to reach `/admin`) | Preview |
+
+Equivalent via CLI, if you do have it linked:
 
 ```bash
 vercel env add DATABASE_URL preview
-vercel env add NEXTAUTH_SECRET preview          # generate: openssl rand -base64 32
-vercel env add NEXTAUTH_URL preview               # e.g. the Preview deployment URL
-vercel env add NEXT_PUBLIC_SYNTHETIC_MODE preview # "true"
-vercel env add SYNTHETIC_PLATFORM_ROLE preview    # "SUPER_ADMIN" to reach /admin
+vercel env add NEXTAUTH_SECRET preview
+vercel env add NEXTAUTH_URL preview
+vercel env add NEXT_PUBLIC_SYNTHETIC_MODE preview
+vercel env add SYNTHETIC_PLATFORM_ROLE preview
 ```
+
+**This is also what makes `/demo` work.** The marketing `/demo` page
+(`app/(marketing)/demo/page.tsx`) checks `NEXT_PUBLIC_SYNTHETIC_MODE` itself: if it's
+`true`, clicking through redirects straight into the live, pre-populated `/dashboard`;
+if unset or `false`, it falls back to a static teaser page with a "Request Demo
+Access" → `/signup` CTA instead. If a deployed demo appears to dead-end at signup
+instead of showing the live dashboard, this env var is the first thing to check —
+**and remember `NEXT_PUBLIC_*` vars are baked in at build time**, so after adding or
+changing it you must trigger a new deployment (redeploy), not just save the setting.
 
 Everything else in `.env.example` (Cognito, AppSync, SageMaker endpoints, S3, SES) is
 optional for a synthetic-mode staging deploy — those are Phase 2 integrations and the
